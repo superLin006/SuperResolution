@@ -1,0 +1,7 @@
+EDSR Model Information
+============================================================
+
+模型格式: TensorFlow (需要从PyTorch转换)
+官方仓库: https://github.com/thstkdgus35/EDSR-PyTorch
+建议配置: filters=256, num_blocks=32 (标准EDSR)
+          filters=64, num_blocks=16 (小型版本)

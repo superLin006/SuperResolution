@@ -1,0 +1,7 @@
+RCAN Model Information
+============================================================
+
+模型格式: TensorFlow (需要从PyTorch转换)
+官方仓库: https://github.com/yulunzhang/RCAN
+建议配置: channels=64, num_groups=10, num_blocks=20 (标准RCAN)
+          channels=64, num_groups=5, num_blocks=10 (小型版本)

@@ -1,0 +1,49 @@
+framework: tensorflow_v2
+environment:
+    recursion_limit: 10000
+model:
+    inputs:
+    -   shape:
+        - 1
+        - 256
+        - 256
+        - 3
+        name: input
+dna:
+    body:
+        och_ratio:
+        - 0.5
+        - 0.75
+        - 1.0
+        - 1.25
+        ksize:
+        - 1
+        - 3
+searching:
+    metrics: {}
+    population:
+        size: 100
+        optimize_mode:
+            PSNR: maximize
+            latency: minimize
+    strategy:
+        name: Evolution
+        num_generations: 10
+        cx_prob: 0.5
+        mut_prob: 0.05
+        select:
+            name: selNSGA2
+    ranking:
+        ranking_type: sortNondominated
+        size: 1
+quant:
+    quantizer:
+        .:
+            init_bitwidth: 8
+    input_ranges:
+    -   bitwidth: 8
+        min: 0
+        max: 255
+workspace_name: tensorflow_v2_edsr_div2k_api
+workspace: /home/wwj/neuro/super_resolution_project/algorithms/edsr/out/tensorflow_v2_edsr_div2k_api/20260114_170222
+exp_dir: /home/wwj/neuro/super_resolution_project/algorithms/edsr/out/tensorflow_v2_edsr_div2k_api/20260114_170222

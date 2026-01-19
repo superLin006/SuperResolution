@@ -1,0 +1,25 @@
+# 编译输出
+build/
+*.o
+*.so
+*.a
+
+# stb库文件（需要用户自行下载）
+stb_image.h
+stb_image_write.h
+
+# 测试输出
+output_*.png
+output_*.jpg
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
