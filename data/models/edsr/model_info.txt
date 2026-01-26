@@ -1,7 +1,27 @@
-EDSR Model Information
-============================================================
+EDSR (Enhanced Deep Residual Networks for Single Image Super-Resolution)
 
-模型格式: TensorFlow (需要从PyTorch转换)
-官方仓库: https://github.com/thstkdgus35/EDSR-PyTorch
-建议配置: filters=256, num_blocks=32 (标准EDSR)
-          filters=64, num_blocks=16 (小型版本)
+模型来源:
+- 论文: EDSR: Enhanced Deep Residual Networks for Single Image Super-Resolution
+- 作者: Bee Lim, Sanghyun Son, Heewon Kim, Seungjun Nah, Kyoung Mu Lee
+- 链接: https://github.com/sanghyun-son/EDSR-PyTorch
+
+模型说明:
+- EDSR_x4: 4x超分辨率模型
+- 训练数据集: DIV2K
+- 输入尺寸: 256x256 RGB (固定)
+- 输出尺寸: 1024x1024 RGB
+- 放大倍数: 4x
+
+转换说明:
+PyTorch → TorchScript → TFLite → DLA (MT8371)
+
+转换命令:
+cd edsr_mtk_workspace/model_prepare
+python step1_pt_to_torchscript.py --input ../../../data/models/edsr/EDSR_x4.pt
+python step2_torchscript_to_tflite.py --torchscript ../models/EDSR_x4_core_256x256.pt
+python step3_tflite_to_dla.py --tflite ../models/EDSR_x4_256x256.tflite --platform MT8371
+
+性能:
+- 设备: IFPD-G520 (MT8189)
+- 推理时间: ~7000ms
+- FPS: 0.14

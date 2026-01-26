@@ -1,7 +1,27 @@
-RCAN Model Information
-============================================================
+RCAN (Residual Channel Attention Networks for Image Super-Resolution)
 
-模型格式: TensorFlow (需要从PyTorch转换)
-官方仓库: https://github.com/yulunzhang/RCAN
-建议配置: channels=64, num_groups=10, num_blocks=20 (标准RCAN)
-          channels=64, num_groups=5, num_blocks=10 (小型版本)
+模型来源:
+- 论文: RCAN: Residual Channel Attention Networks for Image Super-Resolution
+- 作者: Yulun Zhang, Yapeng Tian, Yu Kong, Bineng Zhong, Yun Fu
+- 链接: https://github.com/YapengTian/RCAN-IconVideocluster
+
+模型说明:
+- RCAN_BIX4: 4x超分辨率模型
+- 训练数据集: DIV2K
+- 输入尺寸: 510x339 RGB (固定) 或 128x128 RGB
+- 输出尺寸: 2040x1356 RGB 或 512x512 RGB
+- 放大倍数: 4x
+
+转换说明:
+PyTorch → TorchScript → TFLite → DLA (MT8371)
+
+转换命令 (510x339):
+cd rcan_mtk_workspace/model_prepare
+python step1_pt_to_torchscript.py --checkpoint ../../../data/models/rcan/RCAN_BIX4.pt --input_height 339 --input_width 510
+python step2_torchscript_to_tflite.py --torchscript ../models/RCAN_BIX4_core_339x510.pt
+python step3_tflite_to_dla.py --tflite ../models/RCAN_BIX4_339x510.tflite --platform MT8371
+
+性能:
+- 设备: IFPD-G520 (MT8189)
+- 510x339输入: ~4000ms, FPS 0.25
+- 128x128输入: ~430ms, FPS 2.33
