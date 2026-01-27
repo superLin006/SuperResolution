@@ -1,1 +1,0 @@
-"""RCAN algorithm package."""
