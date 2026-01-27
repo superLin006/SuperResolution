@@ -25,6 +25,8 @@ build/
 # Output files
 data/output/
 data/picture/
+*/test_data/output/
+*/rknn/model/
 *.log
 
 # C++ build artifacts
