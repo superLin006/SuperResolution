@@ -1,0 +1,48 @@
+Real-ESRGAN (Real-World Blind Super-Resolution with Pure Synthetic Data)
+
+模型来源:
+- 论文: Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data
+- 作者: Xintao Wang, Liangbin Xie, Ke Yu, Ying Shan
+- 链接: https://github.com/xinntao/Real-ESRGAN
+
+模型说明:
+- RealESRGAN_x4plus: 4x超分辨率模型 (通用场景)
+- 训练数据集: 合成数据 + 实际降质数据
+- 输入尺寸: 510x339 RGB (固定)
+- 输出尺寸: 2040x1356 RGB
+- 放大倍数: 4x
+- 架构: RRDB (Residual in Residual Dense Block)
+- 参数量: ~16.7M
+
+特点:
+- 不需要MeanShift归一化（与EDSR/RCAN不同）
+- 输入输出都在[0,1]范围
+- 前处理: pixel / 255.0
+- 后处理: clip(pixel, 0, 1) * 255
+- 适用于真实场景图像超分
+
+转换说明:
+PyTorch → TorchScript → TFLite → DLA (MT8371)
+
+转换命令:
+cd realesrgan/mtk/python
+python step1_pt_to_torchscript.py --checkpoint ../../data/models/realesrgan/RealESRGAN_x4plus.pth --input_height 339 --input_width 510
+python step2_torchscript_to_tflite.py --torchscript ../../models/RealESRGAN_x4plus_core_339x510.pt
+python step3_tflite_to_dla.py --tflite ../../models/RealESRGAN_x4plus_339x510.tflite --platform MT8371
+
+性能:
+- 设备: Android设备 (MT8371)
+- 推理时间: ~4669ms
+- FPS: 0.21
+- 内存: ~35MB (输入2MB + 输出33MB)
+
+模型变体:
+- RealESRGAN_x4plus: 通用4倍超分 (23个RRDB块)
+- RealESRGAN_x2plus: 2倍超分
+- RealESRGAN_x4plus_anime_6B: 动漫优化 (6个RRDB块)
+- RealESRNet_x4plus: PSNR导向版本
+
+质量评估:
+- PSNR: >30dB (优秀)
+- 输出质量: 真实场景效果好
+- 适用场景: 图像修复、老照片增强、通用超分
